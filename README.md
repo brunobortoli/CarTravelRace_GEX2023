@@ -92,6 +92,7 @@ Game screen:
 Up - accelerates the car.
 Right - drive the vehicle to the right.
 Left - drive the vehicle to the left.
+Esc - To exit the game.
 
 [Back to top](#cartravelrace_gex2023)
 
