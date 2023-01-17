@@ -99,7 +99,7 @@ Right - drive the vehicle to the right.
 <br/>
 Left - drive the vehicle to the left.
 <br/>
-P – pause the game.
+P - pause the game.
 <br/>
 Esc - To exit the game.
 
