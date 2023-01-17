@@ -81,26 +81,37 @@ The game's main screen will have the following options as a menu for the player.
 [Back to top](#cartravelrace_gex2023)
 
 ### 2.10 Controls
-The controls that the player can use are the buttons:
+The controls that the player can use are the keys:
 
 Menu screen: The player can navigate and select the desired option.
+<br/>
 Up - moves the cursor up.
+<br/>
 Down - moves the cursor down.
+<br/>
 Enter - select option.
 
-Game screen:
+Game screen: The player can use the below keys to play the game.
+<br/>
 Up - accelerates the car.
+<br/>
 Right - drive the vehicle to the right.
+<br/>
 Left - drive the vehicle to the left.
+<br/>
 Esc - To exit the game.
 
 [Back to top](#cartravelrace_gex2023)
 
 ### 2.11 Sounds
 The game will have some sounds like:
+<br/>
 Music on the menu.
+<br/>
 Vehicle acceleration.
+<br/>
 Vehicle collision.
+<br/>
 Sound when the player collects pickups.
 
 [Back to top](#cartravelrace_gex2023)
@@ -114,9 +125,9 @@ This is a racing game that people of all ages and genders can play. Despite bein
 All websites below provide free images.
 
 [https://www.pngfind.com](https://www.pngfind.com)
-
+<br/>
 [https://www.freepik.com](https://freepik.com)
-
+<br/>
 [https://www.shutterstock.com](https://www.shutterstock.com)
 
 [Back to top](#cartravelrace_gex2023)
