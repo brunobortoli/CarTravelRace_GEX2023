@@ -1,0 +1,17 @@
+
+World 1024 6000
+ScrollSpeed 75
+PlayerSpeed 250
+EnemySpeed  100
+BulletSpeed 900
+MissileSpeed 250
+FireInterval 2
+
+Bkg Jungle 0 0
+Bkg Finish 0 0
+
+
+
+## auto pilot directions 5 (bearing time) pairs
+Directions      Raptor    100 0.5    0 1     -100 1   0 1     100 0.5
+Directions      Avenger   70 1.5   -70 1     0 3   70 1.5   -70 1

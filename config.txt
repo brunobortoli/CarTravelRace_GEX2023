@@ -1,0 +1,41 @@
+# GameEngine Config
+
+Window  1024 768
+
+Font    Arial      ../assets/fonts/arial.ttf
+Font    Mario      ../assets/fonts/mario.ttf
+Font    Megaman    ../assets/fonts/megaman.ttf
+
+
+Texture Entities    ../assets/media/Entities.png
+Texture Jungle      ../assets/media/Jungle.png
+Texture Finish      ../assets/media/FinishLine.png
+
+
+JSON                ../assets/media/Entities.json
+
+
+#
+#  Animation    Name            Texture     Speed   Repeats
+Animation       EagleStr        Entities    1        yes
+Animation       EagleRgt        Entities    1        yes
+Animation       EagleLft        Entities    1        yes
+Animation       Bullet          Entities    1        yes
+Animation       Missile         Entities    1        yes
+Animation       explosion       Entities    12       no
+Animation       FireRate        Entities    1        yes
+Animation       FireSpread      Entities    1        yes
+Animation       HealthRefill    Entities    1        yes
+Animation       MissileRefill   Entities    1        yes
+Animation       Particle        Entities    1        yes
+Animation       Raptor          Entities    1        yes
+Animation       Avenger         Entities    1        yes
+
+#
+# SOUNDS
+Sound AlliedGunfire ../assets/Sound/AlliedGunfire.wav
+Sound CollectPickup ../assets/Sound/CollectPickup.wav
+Sound EnemyGunfire  ../assets/Sound/EnemyGunfire.wav
+Sound Explosion1    ../assets/Sound/Explosion1.wav
+Sound Explosion2    ../assets/Sound/Explosion2.wav
+Sound LaunchMissile ../assets/Sound/LaunchMissile.wav

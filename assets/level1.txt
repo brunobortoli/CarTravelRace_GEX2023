@@ -1,0 +1,7 @@
+
+
+# Circle 	label 	radius posx 	posy    vx	vy  	r 	g 	b
+Circle 		Dave	  72 	100 	360		300	510		255	0	255
+Circle 		Sabrina	  25 	100 	700		200	700		0	255	255
+Circle 		Mushoo	  30 	600 	360		300	110		0	255	0
+
