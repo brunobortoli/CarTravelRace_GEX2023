@@ -1,7 +1,3 @@
-//
-// Created by David Burchill on 2022-10-21.
-//
-
 #include <SFML/Window/Keyboard.hpp>
 #include "Scene_Menu.h"
 #include "GameEngine.h"
@@ -28,14 +24,13 @@ void Scene_Menu::init()
 
     registerAction(sf::Keyboard::Escape, "QUIT");
 
-    m_title = "Geo Wars";
+    m_title = "Car Travel Race";
 
 
-    m_menuText.setFont(m_game->assets().getFont("Megaman"));
+    m_menuText.setFont(m_game->assets().getFont("Star"));
 
     const size_t CHAR_SIZE{ 64 };
     m_menuText.setCharacterSize(CHAR_SIZE);
-
 }
 
 
@@ -54,17 +49,24 @@ void Scene_Menu::sRender() {
     view.setCenter(m_game->window().getSize().x / 2.f, m_game->window().getSize().y / 2.f);
     m_game->window().setView(view);
 
-    static const sf::Color selectedColor(255, 255, 255);
-    static const sf::Color normalColor(0, 0, 0);
-    static const sf::Color backgroundColor(100, 100, 255);
+    static const sf::Color selectedColor(73, 73, 73);
+    static const sf::Color normalColor(209, 187, 67);
+    static const sf::Color backgroundColor(0, 0, 0);
 
-    sf::Text footer("UP: W    DOWN: S   PLAY:D    QUIT: ESC",
-        m_game->assets().getFont("Megaman"),
+    sf::Sprite backgroundImg = sf::Sprite{};
+    backgroundImg.setTexture(m_game->assets().getTexture("BkgMenu"));
+    backgroundImg.setPosition(sf::Vector2f{ (1152.f - 1024.f) / -2.f, 0.f });
+
+
+
+    sf::Text footer("UP: W     DOWN: S     PLAY:D     QUIT: ESC",
+        m_game->assets().getFont("Star"),
         20);
     footer.setFillColor(normalColor);
     footer.setPosition(32, 700);
 
     m_game->window().clear(backgroundColor);
+    m_game->window().draw(backgroundImg);
 
     m_menuText.setFillColor(normalColor);
     m_menuText.setString(m_title);
@@ -80,7 +82,6 @@ void Scene_Menu::sRender() {
     }
 
     m_game->window().draw(footer);
-
 }
 
 

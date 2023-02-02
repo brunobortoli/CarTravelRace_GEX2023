@@ -5,11 +5,15 @@ Window  1024 768
 Font    Arial      ../assets/fonts/arial.ttf
 Font    Mario      ../assets/fonts/mario.ttf
 Font    Megaman    ../assets/fonts/megaman.ttf
-
+Font    Dash       ../assets/fonts/dashhorizon.ttf
+Font    Hwr    	   ../assets/fonts/hwr.ttf
+Font    Racing     ../assets/fonts/racinghard.ttf
+Font    Star       ../assets/fonts/star7eaowe.ttf
 
 Texture Entities    ../assets/media/Entities.png
 Texture Jungle      ../assets/media/Jungle.png
 Texture Finish      ../assets/media/FinishLine.png
+Texture BkgMenu     ../assets/images/roadmenu.png
 
 
 JSON                ../assets/media/Entities.json

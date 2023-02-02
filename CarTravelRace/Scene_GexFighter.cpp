@@ -480,11 +480,15 @@ void Scene_GexFighter::adjustPlayer() {
 
 	auto& pos = m_player->getComponent<CTransform>().pos;
 	auto cr = m_player->getComponent<CCollision>().radius;
-
-	pos.x = std::max(pos.x, vb.left + cr);
-	pos.x = std::min(pos.x, vb.left + vb.width - cr);
+	//
+	//pos.x = std::max(pos.x, vb.left + cr);
+	//pos.x = std::min(pos.x, vb.left + vb.width - cr);
 	pos.y = std::max(pos.y, vb.top + cr);
 	pos.y = std::min(pos.y, vb.top + vb.height - cr);
+
+	pos.x = std::max(pos.x, 325.f + cr);
+	pos.x = std::min(pos.x, 711.f - cr);
+
 
 
 }
@@ -544,7 +548,7 @@ void Scene_GexFighter::update(sf::Time dt) {
 	sAnimation(dt);
 	sGuideMissiles(dt);
 	sAutoPilot(dt);
-	spawnEnemies();
+	//spawnEnemies();
 	SoundPlayer::getInstance().removeStoppedSounds();
 }
 

@@ -20,9 +20,9 @@ const sf::Time GameEngine::TIME_PER_FRAME = sf::seconds((1.f / 60.f));
 GameEngine::GameEngine(const std::string& configPath) {
     init(configPath);
     m_assets.loadFromFile(configPath);
-    m_window.create(sf::VideoMode(m_windowSize.x, m_windowSize.y), "GEX GAME");
+    m_window.create(sf::VideoMode(m_windowSize.x, m_windowSize.y), "CAR TRAVEL RACE");
 
-    m_statisticsText.setFont(m_assets.getFont("Arial"));
+    m_statisticsText.setFont(m_assets.getFont("Star"));
     m_statisticsText.setPosition(15.0f, 15.0f);
     m_statisticsText.setCharacterSize(15);
 
@@ -40,10 +40,10 @@ void GameEngine::createMenu() {
     m_sceneMap[SceneID::MENU] = menuScene;
 
     // add items to menu_scene
-    menuScene->registerItem(SceneID::GEO, "Geo Wars Proto");
-    menuScene->registerItem(SceneID::NONE, "Level 2");
-    menuScene->registerItem(SceneID::NONE, "Level 3");
-    menuScene->registerItem(SceneID::FTR, "Gex Fighters");
+    menuScene->registerItem(SceneID::FTR, "1. Play Game");
+    menuScene->registerItem(SceneID::NONE, "2. Instructions");
+    menuScene->registerItem(SceneID::NONE, "3. Exit");
+    //menuScene->registerItem(SceneID::GEO,  "1. Play Game");
 }
 
 
@@ -150,7 +150,7 @@ void GameEngine::updateStatistics(sf::Time dt) {
     m_statisticsUpdateTime += dt;
     m_statisticsNumFrames += 1;
     if (m_statisticsUpdateTime >= sf::seconds(1.0f)) {
-        m_statisticsText.setString("FPS: " + std::to_string(m_statisticsNumFrames));
+        // m_statisticsText.setString("FPS: " + std::to_string(m_statisticsNumFrames));
         m_statisticsUpdateTime -= sf::seconds(1.f);
         m_statisticsNumFrames = 0;
     }
