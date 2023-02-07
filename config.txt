@@ -14,6 +14,7 @@ Texture Entities    ../assets/media/Entities.png
 Texture Jungle      ../assets/media/Jungle.png
 Texture Finish      ../assets/media/FinishLine.png
 Texture BkgMenu     ../assets/images/roadmenu.png
+Texture car	    ../assets/images/car.png
 
 
 JSON                ../assets/media/Entities.json

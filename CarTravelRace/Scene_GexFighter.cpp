@@ -439,7 +439,8 @@ void Scene_GexFighter::spawnPlayer() {
 		sf::Vector2f(0.f, 0.f),
 		0, 0);
 
-	m_player->addComponent<CAnimation>(m_game->assets().getAnimation("EagleStr"));
+	//m_player->addComponent<CAnimation>(m_game->assets().getAnimation("EagleStr"));
+	m_player->addComponent<CSprite>(m_game->assets().getTexture("car"));
 	m_player->addComponent<CState>("straight");
 	m_player->addComponent<CCollision>(20);
 	m_player->addComponent<CInput>();
@@ -541,7 +542,7 @@ void Scene_GexFighter::update(sf::Time dt) {
 	m_worldView.move(0.f, m_scrollSpeed * dt.asSeconds() * -1);
 
 	adjustPlayer();
-	checkPlayerState();
+	//checkPlayerState();
 	sMovement(dt);
 	sCollisions();
 	sGunUpdate(dt);
@@ -612,7 +613,7 @@ void Scene_GexFighter::sRender() {
 
 	for (auto e : m_entityManager.getEntities()) {
 
-		// draw all entities with textures
+		// draw all entities with animation component
 		if (e->getComponent<CAnimation>().has) {
 			auto& tfm = e->getComponent<CTransform>();
 			auto& anim = e->getComponent<CAnimation>().animation;
@@ -649,6 +650,16 @@ void Scene_GexFighter::sRender() {
 				m_game->window().draw(text);
 			}
 		}
+
+		// draw entities with CSprite component
+		if (e->getComponent<CSprite>().has && e->getTag() != "bkg") {
+			auto& tfm = e->getComponent<CTransform>();
+			auto& spr = e->getComponent<CSprite>().sprite;
+			spr.setPosition(tfm.pos);
+			spr.setRotation(tfm.rot);
+			m_game->window().draw(spr);
+		}
+
 	}
 
 	if (m_isPaused) {

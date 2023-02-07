@@ -20,7 +20,8 @@ void Scene_Menu::init()
     registerAction(sf::Keyboard::S, "DOWN");
     registerAction(sf::Keyboard::Down, "DOWN");
 
-    registerAction(sf::Keyboard::D, "PLAY");
+    registerAction(sf::Keyboard::Enter, "PLAY");
+    registerAction(sf::Keyboard::P, "PLAY");
 
     registerAction(sf::Keyboard::Escape, "QUIT");
 
@@ -59,7 +60,7 @@ void Scene_Menu::sRender() {
 
 
 
-    sf::Text footer("UP: W     DOWN: S     PLAY:D     QUIT: ESC",
+    sf::Text footer("UP: W     DOWN: S     PLAY:P     QUIT: ESC",
         m_game->assets().getFont("Star"),
         20);
     footer.setFillColor(normalColor);
@@ -99,7 +100,12 @@ void Scene_Menu::sDoAction(const Action& action) {
         // TODO generalize
         else if (action.name() == "PLAY")
         {
-            m_game->changeScene(m_menuItems.at(m_menuIndex).first);
+            if (m_menuItems.at(m_menuIndex).second == "3. Exit") {
+                onEnd();
+            }
+            else {
+                m_game->changeScene(m_menuItems.at(m_menuIndex).first);
+            }
         }
         else if (action.name() == "QUIT")
         {
@@ -107,7 +113,6 @@ void Scene_Menu::sDoAction(const Action& action) {
         }
     }
 }
-
 
 
 void Scene_Menu::onEnd()
