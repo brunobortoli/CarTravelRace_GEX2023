@@ -12,7 +12,7 @@
 
 
 class Scene;
-enum class SceneID { NONE, MENU, GEO, FTR };
+enum class SceneID { NONE, MENU, GEO, FTR, MINS };
 
 using Sptr = std::shared_ptr<Scene>;
 using SceneMap = std::map<SceneID, Sptr>;
@@ -42,6 +42,7 @@ private:
     std::shared_ptr<Scene>  currentScene();
     void                    createFactories();
     void                    createMenu();
+    void                    createMenuInstuc();
 
     const static sf::Time   TIME_PER_FRAME;
 

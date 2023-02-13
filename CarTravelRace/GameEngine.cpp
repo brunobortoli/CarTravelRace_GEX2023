@@ -28,6 +28,7 @@ GameEngine::GameEngine(const std::string& configPath) {
 
     createFactories();
     createMenu();
+    createMenuInstuc();
     m_currentScene = SceneID::MENU;
     MusicPlayer::getInstance().play("menuTheme");
 }
@@ -41,14 +42,33 @@ void GameEngine::createMenu() {
 
     // add items to menu_scene
     menuScene->registerItem(SceneID::FTR, "1. Play Game");
-    menuScene->registerItem(SceneID::NONE, "2. Instructions");
+    menuScene->registerItem(SceneID::MINS, "2. Instructions");
     menuScene->registerItem(SceneID::NONE, "3. Exit");
-    //menuScene->registerItem(SceneID::GEO,  "1. Play Game");
+
+}
+
+void GameEngine::createMenuInstuc()
+{
+    // create the menu_scene and put in sceneMap
+    auto menuScene = std::make_shared<Scene_Menu>(this);
+    m_sceneMap[SceneID::MINS] = menuScene;
+
+    // add items to menu_scene
+    menuScene->registerItem(SceneID::NONE, "Accelerate: UP");
+    menuScene->registerItem(SceneID::NONE, "Move right: RIGHT");
+    menuScene->registerItem(SceneID::NONE, "Move left:  LEFT");
+    menuScene->registerItem(SceneID::NONE, " ");
+    menuScene->registerItem(SceneID::MENU, "Back to menu");
 }
 
 
 void GameEngine::createFactories() {
     m_factories[SceneID::MENU] = std::function<Sptr()>(
+        [this]() -> Sptr {
+            return std::make_shared<Scene_Menu>(this);
+        });
+
+    m_factories[SceneID::MINS] = std::function<Sptr()>(
         [this]() -> Sptr {
             return std::make_shared<Scene_Menu>(this);
         });

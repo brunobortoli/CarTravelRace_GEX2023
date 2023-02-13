@@ -115,6 +115,7 @@ void Scene_Menu::sDoAction(const Action& action) {
 }
 
 
+
 void Scene_Menu::onEnd()
 {
     m_game->window().close();
