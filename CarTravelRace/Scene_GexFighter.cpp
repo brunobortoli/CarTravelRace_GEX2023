@@ -25,6 +25,9 @@ Scene_GexFighter::Scene_GexFighter(GameEngine* gameEngine, const std::string& co
 
 	registerActions();
 	spawnPlayer();
+	spawnEnemy("car01", m_spawnPosition + sf::Vector2f(50.f, 100.f));
+	spawnEnemy("car02", m_spawnPosition + sf::Vector2f(50.f, 100.f));
+	//spawnEnemy("car01", m_spawnPosition + sf::Vector2f(0.f, -500.f));
 	// spawnEnemy("Avenger", m_spawnPosition + sf::Vector2f(0.f, -500.f));
 	// spawnEnemy("Avenger", m_spawnPosition + sf::Vector2f(300.f, -500.f));
 	// spawnEnemy("Avenger", m_spawnPosition + sf::Vector2f(-300.f, -500.f));
@@ -53,7 +56,8 @@ void Scene_GexFighter::loadFromFile(const std::string& configPath) {
 			config >> m_worldBounds.width >> m_worldBounds.height;
 		}
 		else if (token == "ScrollSpeed") {
-			config >> m_scrollSpeed;
+			//config >> m_scrollSpeed;
+			m_scrollSpeed = 0;
 		}
 		else if (token == "PlayerSpeed") {
 			config >> m_playerSpeed;
@@ -134,8 +138,6 @@ void Scene_GexFighter::onEnd() {
 void Scene_GexFighter::sMovement(sf::Time dt) {
 	playerMovement();
 
-
-
 	// move all objects
 	for (auto e : m_entityManager.getEntities()) {
 		if (e->hasComponent<CTransform>()) {
@@ -170,7 +172,6 @@ void Scene_GexFighter::playerMovement() {
 	if (pInput.down) pv.y += 1;
 	pv = normalize(pv);
 	m_player->getComponent<CTransform>().vel = m_playerSpeed * pv;
-
 }
 
 
@@ -237,8 +238,6 @@ void Scene_GexFighter::spawnPickup(NttPtr e)
 
 		auto textureFile = m_game->assets().getAnimation(texture);
 		pickup->addComponent<CAnimation>(textureFile);
-
-
 	}
 }
 
@@ -429,6 +428,10 @@ void Scene_GexFighter::registerActions() {
 
 	registerAction(sf::Keyboard::Space, "FIRE");
 	registerAction(sf::Keyboard::M, "LAUNCH");
+
+
+	registerAction(sf::Keyboard::Z, "ACCELERATE");
+	registerAction(sf::Keyboard::X, "BREAK");
 }
 
 
@@ -441,12 +444,12 @@ void Scene_GexFighter::spawnPlayer() {
 
 	//m_player->addComponent<CAnimation>(m_game->assets().getAnimation("EagleStr"));
 	m_player->addComponent<CSprite>(m_game->assets().getTexture("car"));
-	m_player->addComponent<CState>("straight");
+	//m_player->addComponent<CState>("straight");
 	m_player->addComponent<CCollision>(20);
 	m_player->addComponent<CInput>();
-	m_player->addComponent<CMissiles>();
+	//m_player->addComponent<CMissiles>();
 	m_player->addComponent<CHealth>().hp = 100;
-	auto& gun = m_player->addComponent<CGun>();
+	//auto& gun = m_player->addComponent<CGun>();
 
 }
 
@@ -472,7 +475,6 @@ void Scene_GexFighter::drawAABB() {
 			m_game->window().draw(cir);
 		}
 	}
-
 }
 
 
@@ -489,9 +491,6 @@ void Scene_GexFighter::adjustPlayer() {
 
 	pos.x = std::max(pos.x, 325.f + cr);
 	pos.x = std::min(pos.x, 711.f - cr);
-
-
-
 }
 
 
@@ -540,16 +539,17 @@ void Scene_GexFighter::update(sf::Time dt) {
 
 	m_entityManager.update();
 	m_worldView.move(0.f, m_scrollSpeed * dt.asSeconds() * -1);
+	//m_worldView.move(0.f, 0 * dt.asSeconds() * -1);
 
 	adjustPlayer();
 	//checkPlayerState();
 	sMovement(dt);
-	sCollisions();
+	//sCollisions();
 	sGunUpdate(dt);
 	sAnimation(dt);
 	sGuideMissiles(dt);
 	sAutoPilot(dt);
-	//spawnEnemies();
+	spawnEnemies();
 	SoundPlayer::getInstance().removeStoppedSounds();
 }
 
@@ -576,7 +576,12 @@ void Scene_GexFighter::sDoAction(const Action& action) {
 		// firing weapons
 		else if (action.name() == "FIRE") { fireBullet(); }
 		else if (action.name() == "LAUNCH") { fireMissile(); }
-
+		else if (action.name() == "ACCELERATE") { m_scrollSpeed += 10; }
+		else if (action.name() == "BREAK") {
+			m_scrollSpeed -= 10;
+			if (m_scrollSpeed <= 0)
+				m_scrollSpeed = 0;
+		}
 	}
 
 	// on Key Release
@@ -609,7 +614,6 @@ void Scene_GexFighter::sRender() {
 			m_game->window().draw(sprite);
 		}
 	}
-
 
 	for (auto e : m_entityManager.getEntities()) {
 
@@ -659,11 +663,10 @@ void Scene_GexFighter::sRender() {
 			spr.setRotation(tfm.rot);
 			m_game->window().draw(spr);
 		}
-
 	}
 
 	if (m_isPaused) {
-		sf::Text paused("PAUSED", m_game->assets().getFont("Megaman"), 128);
+		sf::Text paused("PAUSED", m_game->assets().getFont("Star"), 128);
 		centerOrigin(paused);
 		auto bounds = getViewBounds();
 		paused.setPosition(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
@@ -671,7 +674,7 @@ void Scene_GexFighter::sRender() {
 	}
 
 	if (m_playerWon) {
-		sf::Text msg("You Win", m_game->assets().getFont("Megaman"), 128);
+		sf::Text msg("You Win", m_game->assets().getFont("Star"), 128);
 		centerOrigin(msg);
 		auto bounds = getViewBounds();
 		msg.setPosition(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
@@ -679,7 +682,7 @@ void Scene_GexFighter::sRender() {
 	}
 
 	if (m_playerLost) {
-		sf::Text msg("You Lose", m_game->assets().getFont("Megaman"), 128);
+		sf::Text msg("You Lose", m_game->assets().getFont("Star"), 128);
 		centerOrigin(msg);
 		auto bounds = getViewBounds();
 		msg.setPosition(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
@@ -727,7 +730,6 @@ void Scene_GexFighter::createBullet(sf::Vector2f pos, bool isEnemy) {
 		SoundPlayer::getInstance().play("EnemyGunfire");
 	else
 		SoundPlayer::getInstance().play("AlliedGunfire");
-
 }
 
 
@@ -853,11 +855,14 @@ void Scene_GexFighter::spawnEnemies(std::string type, float offset, size_t numPl
 void Scene_GexFighter::spawnEnemy(std::string type, sf::Vector2f pos) {
 
 	auto vel = sf::Vector2f(0.f, m_enemySpeed);
-	float rotation = 180.f;
+	//float rotation = 180.f;
+	float rotation = 0.f;
 
 	auto enemyPlane = m_entityManager.addEntity("enemy");
 	enemyPlane->addComponent<CTransform>(pos, vel, rotation);
-	enemyPlane->addComponent<CAnimation>(m_game->assets().getAnimation(type));
+	//enemyPlane->addComponent<CAnimation>(m_game->assets().getAnimation(type));
+	enemyPlane->addComponent<CSprite>(m_game->assets().getTexture(type));
+	//enemyPlane->addComponent<CSprite>(m_game->assets().getTexture("car02"));
 	enemyPlane->addComponent<CCollision>(20);
 	enemyPlane->addComponent<CHealth>(100);
 
@@ -865,14 +870,14 @@ void Scene_GexFighter::spawnEnemy(std::string type, sf::Vector2f pos) {
 	ap.bearings = m_enemyConfig[type].dirs;
 	ap.lengths = m_enemyConfig[type].times;
 
-	if (type == "Avenger")
-		enemyPlane->addComponent<CGun>();
+	//if (type == "Avenger")
+	//	enemyPlane->addComponent<CGun>();
 }
 
 
 void Scene_GexFighter::spawnEnemies() {
-	std::uniform_int_distribution<int> numberOfPlanes(3, 4);
-	std::uniform_int_distribution<int> typeOfPlane(0, 1);
+	std::uniform_int_distribution<int> numberOfPlanes(1, 1);
+	std::uniform_int_distribution<int> typeOfPlane(1, 9);
 	std::exponential_distribution<float> nextSpawnPoint(1.f / 250.f);
 
 	auto bounds = getViewBounds();
@@ -880,10 +885,11 @@ void Scene_GexFighter::spawnEnemies() {
 
 	if (next_spawn_point > bounds.top - 100) {
 		int num = numberOfPlanes(rng);
-		spawnEnemies((typeOfPlane(rng) == 0) ? "Avenger" : "Raptor", next_spawn_point, num);
+		int carNumber = typeOfPlane(rng);
+		std::string carType = "car0" + std::to_string(carNumber);
+		spawnEnemies(carType, next_spawn_point, num);
 		next_spawn_point = bounds.top - 200.f - nextSpawnPoint(rng);
 	}
-
 }
 
 
@@ -900,7 +906,6 @@ void Scene_GexFighter::sAutoPilot(const sf::Time& dt) {// autopilot enemties
 				auto& tfm = e->getComponent<CTransform>();
 				tfm.vel = length(tfm.vel) * uVecFromBearing(90 + ai.bearings[ai.currentLeg]);
 			}
-
 		}
 	}
 }

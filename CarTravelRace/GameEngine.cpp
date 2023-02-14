@@ -28,7 +28,7 @@ GameEngine::GameEngine(const std::string& configPath) {
 
     createFactories();
     createMenu();
-    createMenuInstuc();
+    createMenuInstruc();
     m_currentScene = SceneID::MENU;
     MusicPlayer::getInstance().play("menuTheme");
 }
@@ -47,7 +47,7 @@ void GameEngine::createMenu() {
 
 }
 
-void GameEngine::createMenuInstuc()
+void GameEngine::createMenuInstruc()
 {
     // create the menu_scene and put in sceneMap
     auto menuScene = std::make_shared<Scene_Menu>(this);
@@ -57,8 +57,13 @@ void GameEngine::createMenuInstuc()
     menuScene->registerItem(SceneID::NONE, "Accelerate: UP");
     menuScene->registerItem(SceneID::NONE, "Move right: RIGHT");
     menuScene->registerItem(SceneID::NONE, "Move left:  LEFT");
-    menuScene->registerItem(SceneID::NONE, " ");
+    //    menuScene->registerItem(SceneID::NONE, " ");
     menuScene->registerItem(SceneID::MENU, "Back to menu");
+}
+
+SceneID GameEngine::getCurrentScene()
+{
+    return m_currentScene;
 }
 
 

@@ -15,6 +15,15 @@ Texture Jungle      ../assets/media/Jungle.png
 Texture Finish      ../assets/media/FinishLine.png
 Texture BkgMenu     ../assets/images/roadmenu.png
 Texture car	    ../assets/images/car.png
+Texture car01	    ../assets/images/car01.png
+Texture car02	    ../assets/images/car02.png
+Texture car03	    ../assets/images/car03.png
+Texture car04	    ../assets/images/car04.png
+Texture car05	    ../assets/images/car05.png
+Texture car06	    ../assets/images/car06.png
+Texture car07	    ../assets/images/car07.png
+Texture car08	    ../assets/images/car08.png
+Texture car09	    ../assets/images/car09.png
 
 
 JSON                ../assets/media/Entities.json

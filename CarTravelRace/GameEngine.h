@@ -42,7 +42,8 @@ private:
     std::shared_ptr<Scene>  currentScene();
     void                    createFactories();
     void                    createMenu();
-    void                    createMenuInstuc();
+    void                    createMenuInstruc();
+
 
     const static sf::Time   TIME_PER_FRAME;
 
@@ -58,6 +59,8 @@ public:
 
     void                    quitLevel();
     void                    backLevel();
+
+    SceneID                 getCurrentScene();
 };
 
 

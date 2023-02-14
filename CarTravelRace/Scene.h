@@ -36,7 +36,7 @@ public:
     virtual void		sRender() = 0;
 
     void				doAction(Action);
-    void				registerAction(int, std::string);
+    void				registerAction(int id, std::string action);
     const ActionMap		getActionMap() const;
 };
 
