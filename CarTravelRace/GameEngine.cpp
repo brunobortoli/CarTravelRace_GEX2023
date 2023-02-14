@@ -200,6 +200,8 @@ void GameEngine::changeScene(SceneID id, bool endCurrentScene) {
 
     if (id == SceneID::MENU)
         MusicPlayer::getInstance().play("menuTheme");
+    if (id == SceneID::MINS)
+        MusicPlayer::getInstance().play("menuTheme");
     if (id == SceneID::FTR)
         MusicPlayer::getInstance().play("gameTheme");
 }
