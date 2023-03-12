@@ -40,6 +40,8 @@ private:
     bool                            m_playerLost{ false };
     float                           m_finishPoint{ 0 };
 
+    const float                     ROAD_LEFT_POS{ 325.f };
+    const float                     ROAD_RIGHT_POS{ 711.f };
 
     void	                        onEnd() override;
 
@@ -56,7 +58,6 @@ private:
     void                            spawnEnemies();
     sf::Vector2f                    findClosestEnemy(sf::Vector2f mPos);
     void                            spawnEnemy(std::string type, sf::Vector2f pos);
-    void                            spawnEnemies(std::string type, float offset, size_t numPlanes);
     void                            createBullet(sf::Vector2f pos, bool isEnemy);
     void                            registerActions();
     void                            init(const std::string& configPath);
@@ -74,6 +75,8 @@ private:
     void                            checkPickupCollision();
     void                            checkIfDead(NttPtr e);
     void                            spawnPickup(NttPtr e);
+
+    int                             countEnemiesOnView(); //new
 
 
 public:
