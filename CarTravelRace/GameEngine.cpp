@@ -57,7 +57,6 @@ void GameEngine::createMenuInstruc()
     menuScene->registerItem(SceneID::NONE, "Accelerate: UP");
     menuScene->registerItem(SceneID::NONE, "Move right: RIGHT");
     menuScene->registerItem(SceneID::NONE, "Move left:  LEFT");
-    //    menuScene->registerItem(SceneID::NONE, " ");
     menuScene->registerItem(SceneID::MENU, "Back to menu");
 }
 
