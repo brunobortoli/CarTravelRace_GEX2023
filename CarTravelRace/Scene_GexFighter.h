@@ -58,6 +58,7 @@ private:
     void                            spawnEnemies();
     sf::Vector2f                    findClosestEnemy(sf::Vector2f mPos);
     void                            spawnEnemy(std::string type, sf::Vector2f pos);
+    void                            spawnAnimal();
     void                            createBullet(sf::Vector2f pos, bool isEnemy);
     void                            registerActions();
     void                            init(const std::string& configPath);

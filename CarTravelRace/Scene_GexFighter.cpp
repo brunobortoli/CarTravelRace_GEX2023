@@ -571,6 +571,7 @@ void Scene_GexFighter::update(sf::Time dt) {
 	sGuideMissiles(dt);
 	sAutoPilot(dt);
 	spawnEnemies();
+	spawnAnimal();
 	SoundPlayer::getInstance().removeStoppedSounds();
 }
 
@@ -867,6 +868,7 @@ void Scene_GexFighter::spawnEnemy(std::string type, sf::Vector2f pos) {
 	float rotation = 0.f;
 
 	auto opponentCar = m_entityManager.addEntity("enemy");
+
 	opponentCar->addComponent<CTransform>(pos, vel, rotation);
 
 	opponentCar->addComponent<CSprite>(m_game->assets().getTexture(type));
@@ -880,6 +882,28 @@ void Scene_GexFighter::spawnEnemy(std::string type, sf::Vector2f pos) {
 
 	//if (type == "Avenger")
 	//	enemyPlane->addComponent<CGun>();
+}
+
+void Scene_GexFighter::spawnAnimal()
+{
+	std::uniform_int_distribution<int> generate(1, 1000);
+	int left = (int)ROAD_LEFT_POS + 20;
+	int right = (int)ROAD_RIGHT_POS - 20;
+	//std::uniform_int_distribution<int> xSpawnPoint(left, right);
+
+	if (generate(rng) == 10) {
+		auto bounds = getViewBounds();
+
+		auto vel = sf::Vector2f(-4.f, 0.f);
+		auto pos = sf::Vector2f(right, bounds.top - 100.f);
+		float rotation = 0.f;
+
+		auto opponentAnimal = m_entityManager.addEntity("animal");  // apelido para o tipo de entidade
+
+		opponentAnimal->addComponent<CTransform>(pos, vel, rotation);  // determina a posicao onde a entidade vai ser desenhada
+
+		opponentAnimal->addComponent<CSprite>(m_game->assets().getTexture("cdeerleft"));  // pega a imagem no disco e "gruda" na entidade
+	}
 }
 
 
@@ -915,7 +939,6 @@ void Scene_GexFighter::spawnEnemies() {
 		int carNumber = typeOfCar(rng);
 		std::string carType = "car0" + std::to_string(carNumber);
 		spawnEnemy(carType, pos);
-
 	}
 
 }
