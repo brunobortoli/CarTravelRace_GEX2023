@@ -24,7 +24,11 @@ Texture car06	    ../assets/images/car06.png
 Texture car07	    ../assets/images/car07.png
 Texture car08	    ../assets/images/car08.png
 Texture car09	    ../assets/images/car09.png
-
+Texture cdeerleft   ../assets/images/cdeerleft.png
+Texture cdeerright  ../assets/images/cdeerright.png
+Texture ccone       ../assets/images/ccone.png
+Texture cgas	    ../assets/images/cgas.png
+Texture ctools	    ../assets/images/ctools.png
 
 JSON                ../assets/media/Entities.json
 
