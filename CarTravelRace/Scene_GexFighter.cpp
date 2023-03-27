@@ -439,17 +439,14 @@ void Scene_GexFighter::registerActions() {
 	registerAction(sf::Keyboard::Left, "LEFT");
 	registerAction(sf::Keyboard::D, "RIGHT");
 	registerAction(sf::Keyboard::Right, "RIGHT");
-	registerAction(sf::Keyboard::W, "UP");
-	registerAction(sf::Keyboard::Up, "UP");
-	registerAction(sf::Keyboard::S, "DOWN");
-	registerAction(sf::Keyboard::Down, "DOWN");
+	registerAction(sf::Keyboard::W, "ACCELERATE");
+	registerAction(sf::Keyboard::Up, "ACCELERATE");
+	registerAction(sf::Keyboard::S, "BREAK");
+	registerAction(sf::Keyboard::Down, "BREAK");
 
 	registerAction(sf::Keyboard::Space, "FIRE");
 	registerAction(sf::Keyboard::M, "LAUNCH");
 
-
-	registerAction(sf::Keyboard::Z, "ACCELERATE");
-	registerAction(sf::Keyboard::X, "BREAK");
 }
 
 
