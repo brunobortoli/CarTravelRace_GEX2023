@@ -25,13 +25,6 @@ Scene_GexFighter::Scene_GexFighter(GameEngine* gameEngine, const std::string& co
 
 	registerActions();
 	spawnPlayer();
-	//spawnEnemy("car01", m_spawnPosition + sf::Vector2f(50.f, 100.f));
-	//spawnEnemy("car02", m_spawnPosition + sf::Vector2f(50.f, 100.f));
-	//spawnEnemy("car01", m_spawnPosition + sf::Vector2f(0.f, -500.f));
-	// spawnEnemy("Avenger", m_spawnPosition + sf::Vector2f(0.f, -500.f));
-	// spawnEnemy("Avenger", m_spawnPosition + sf::Vector2f(300.f, -500.f));
-	// spawnEnemy("Avenger", m_spawnPosition + sf::Vector2f(-300.f, -500.f));
-
 }
 
 
@@ -178,7 +171,8 @@ void Scene_GexFighter::playerMovement() {
 void Scene_GexFighter::sCollisions() {
 	checkMissileCollision();
 	checkBulletCollision();
-	checkPlaneCollision();
+	checkCarCollision();
+	checkMissileCollision();
 	checkPickupCollision();
 }
 
@@ -260,7 +254,7 @@ int Scene_GexFighter::countEnemiesOnView()
 }
 
 
-void Scene_GexFighter::checkPlaneCollision() {// check for plane collision
+void Scene_GexFighter::checkCarCollision() {// check for plane collision
 
 	if (m_player->hasComponent<CCollision>()) {
 		auto pPos = m_player->getComponent<CTransform>().pos;
@@ -285,10 +279,29 @@ void Scene_GexFighter::checkPlaneCollision() {// check for plane collision
 					checkIfDead(e);
 					checkIfDead(m_player);
 				}
+			}
+		}
 
+		for (auto e : m_entityManager.getEntities("animal")) {
+			if (e->hasComponent<CTransform>() && e->hasComponent<CCollision>()) {
+				auto ePos = e->getComponent<CTransform>().pos;
+				auto eCr = e->getComponent<CCollision>().radius;
+
+				// planes have collided
+				if (dist(ePos, pPos) < (eCr + pCr)) {
+
+					e->addComponent<CAnimation>(m_game->assets().getAnimation("explosion"));
+					e->getComponent<CTransform>().vel = sf::Vector2f(0.f, 0.f);
+					e->addComponent<CState>().state = "dead";
+					e->removeComponent<CCollision>();
+
+					SoundPlayer::getInstance().play("Explosion1");
+					e->destroy();
+				}
 			}
 		}
 	}
+
 }
 
 void Scene_GexFighter::checkPickupCollision()
@@ -373,7 +386,6 @@ void Scene_GexFighter::checkBulletCollision() {
 		}
 	}
 
-
 	// Enemy Bullets
 	if (m_player->hasComponent<CCollision>()) {
 		auto pPos = m_player->getComponent<CTransform>().pos;
@@ -393,7 +405,6 @@ void Scene_GexFighter::checkBulletCollision() {
 		}
 	}
 }
-
 
 void Scene_GexFighter::checkMissileCollision() {// missiles
 	for (auto m : m_entityManager.getEntities("missile")) {
@@ -452,10 +463,6 @@ void Scene_GexFighter::registerActions() {
 
 void Scene_GexFighter::spawnPlayer() {
 	m_player = m_entityManager.addEntity("player");
-	//m_player->addComponent<CTransform>(
-	//	m_spawnPosition,
-	//	sf::Vector2f(0.f, 0.f),
-	//	0, 0);
 
 	auto vb = getViewBounds();
 	m_player->addComponent<CTransform>(
@@ -463,15 +470,10 @@ void Scene_GexFighter::spawnPlayer() {
 		sf::Vector2f(0.f, 0.f),
 		0, 0);
 
-	//m_player->addComponent<CAnimation>(m_game->assets().getAnimation("EagleStr"));
 	m_player->addComponent<CSprite>(m_game->assets().getTexture("car"));
-	//m_player->addComponent<CState>("straight");
 	m_player->addComponent<CCollision>(20);
 	m_player->addComponent<CInput>();
-	//m_player->addComponent<CMissiles>();
 	m_player->addComponent<CHealth>().hp = 100;
-	//auto& gun = m_player->addComponent<CGun>();
-
 }
 
 
@@ -504,9 +506,7 @@ void Scene_GexFighter::adjustPlayer() {
 
 	auto& pos = m_player->getComponent<CTransform>().pos;
 	auto cr = m_player->getComponent<CCollision>().radius;
-	//
-	//pos.x = std::max(pos.x, vb.left + cr);
-	//pos.x = std::min(pos.x, vb.left + vb.width - cr);
+
 	pos.y = std::max(pos.y, vb.top + cr);
 	pos.y = std::min(pos.y, vb.top + vb.height - 46.f);
 
@@ -592,8 +592,6 @@ void Scene_GexFighter::sDoAction(const Action& action) {
 		// Player control
 		else if (action.name() == "LEFT") { m_player->getComponent<CInput>().left = true; }
 		else if (action.name() == "RIGHT") { m_player->getComponent<CInput>().right = true; }
-		//else if (action.name() == "UP") { m_player->getComponent<CInput>().up = true; }
-		//else if (action.name() == "DOWN") { m_player->getComponent<CInput>().down = true; }
 
 		// firing weapons
 		else if (action.name() == "FIRE") { fireBullet(); }
@@ -820,8 +818,6 @@ void Scene_GexFighter::fireMissile() {
 			missile->addComponent<CCollision>(14);
 
 			SoundPlayer::getInstance().play("LaunchMissile");
-
-			//std::cout << "origin: " << missile->getComponent<CAnimation>().animation.getSprite().getOrigin() << "\n";
 		}
 	}
 }
@@ -880,13 +876,11 @@ void Scene_GexFighter::spawnEnemy(std::string type, sf::Vector2f pos) {
 	ap.bearings = m_enemyConfig[type].dirs;
 	ap.lengths = m_enemyConfig[type].times;
 
-	//if (type == "Avenger")
-	//	enemyPlane->addComponent<CGun>();
 }
 
 void Scene_GexFighter::spawnAnimal()
 {
-	std::uniform_int_distribution<int> generate(1, 1000);
+	std::uniform_int_distribution<int> generate(1, 100);
 	int left = (int)ROAD_LEFT_POS + 20;
 	int right = (int)ROAD_RIGHT_POS - 20;
 	//std::uniform_int_distribution<int> xSpawnPoint(left, right);
@@ -903,31 +897,14 @@ void Scene_GexFighter::spawnAnimal()
 		opponentAnimal->addComponent<CTransform>(pos, vel, rotation);  // determina a posicao onde a entidade vai ser desenhada
 
 		opponentAnimal->addComponent<CSprite>(m_game->assets().getTexture("cdeerleft"));  // pega a imagem no disco e "gruda" na entidade
+		opponentAnimal->addComponent<CCollision>(30);
 	}
 }
-
-
-//void Scene_GexFighter::spawnEnemies() {
-//	std::uniform_int_distribution<int> numberOfPlanes(1, 1);
-//	std::uniform_int_distribution<int> typeOfPlane(1, 9);
-//	std::exponential_distribution<float> nextSpawnPoint(1.f / 250.f);
-//
-//	auto bounds = getViewBounds();
-//	static float next_spawn_point{ bounds.top - 100 };
-//
-//	if (next_spawn_point > bounds.top - 100) {
-//		int num = numberOfPlanes(rng);
-//		int carNumber = typeOfPlane(rng);
-//		std::string carType = "car0" + std::to_string(carNumber);
-//		spawnEnemies(carType, next_spawn_point, num);
-//		next_spawn_point = bounds.top - 200.f - nextSpawnPoint(rng);
-//	}
-//}
 
 void Scene_GexFighter::spawnEnemies() {
 
 	std::uniform_int_distribution<int> typeOfCar(1, 9);
-	std::uniform_int_distribution<int> generate(1, 1000);
+	std::uniform_int_distribution<int> generate(1, 100000);
 	int left = (int)ROAD_LEFT_POS + 20;
 	int right = (int)ROAD_RIGHT_POS - 20;
 	std::uniform_int_distribution<int> xSpawnPoint(left, right);
@@ -935,14 +912,12 @@ void Scene_GexFighter::spawnEnemies() {
 
 	auto pos = sf::Vector2f(xSpawnPoint(rng), bounds.top - 100.f);
 	auto ready = generate(rng);
-	if ((ready % 100 == 0) && (countEnemiesOnView() < 4)) {
+	if ((ready % 100 == 0) && (countEnemiesOnView() < 1)) {
 		int carNumber = typeOfCar(rng);
 		std::string carType = "car0" + std::to_string(carNumber);
 		spawnEnemy(carType, pos);
 	}
-
 }
-
 
 void Scene_GexFighter::sAutoPilot(const sf::Time& dt) {// autopilot enemties
 	for (auto e : m_entityManager.getEntities("enemy")) {

@@ -72,7 +72,7 @@ private:
     void                            fireMissile();
     void                            checkMissileCollision();
     void                            checkBulletCollision();
-    void                            checkPlaneCollision();
+    void                            checkCarCollision();
     void                            checkPickupCollision();
     void                            checkIfDead(NttPtr e);
     void                            spawnPickup(NttPtr e);
