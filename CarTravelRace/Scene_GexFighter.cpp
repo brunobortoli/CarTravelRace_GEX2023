@@ -565,7 +565,7 @@ void Scene_GexFighter::update(sf::Time dt) {
 	adjustPlayer();
 	//checkPlayerState();
 	sMovement(dt);
-	//sCollisions();
+	sCollisions();
 	sGunUpdate(dt);
 	sAnimation(dt);
 	sGuideMissiles(dt);
